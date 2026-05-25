@@ -1,0 +1,291 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 420px;
+    padding: 30px 20px;
+}
+
+/* ── 计时器 ──────────────────────────────── */
+
+.app-title {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #ff6b6b;
+}
+
+.timer-ring-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+}
+
+.timer-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+
+.ring-bg {
+    fill: none;
+    stroke: #2d2d44;
+    stroke-width: 8;
+}
+
+.ring-progress {
+    fill: none;
+    stroke: #ff6b6b;
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 565.48;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+}
+
+.timer-display {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-time {
+    font-size: 42px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-label {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 2px;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.btn {
+    padding: 8px 22px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn:disabled { opacity: 0.4; cursor: default; }
+
+.btn-start { background: #ff6b6b; color: #fff; }
+.btn-start:hover:not(:disabled) { background: #ee5a5a; }
+.btn-pause { background: #f0c040; color: #1a1a2e; }
+.btn-pause:hover:not(:disabled) { background: #dbb030; }
+.btn-reset { background: #3d3d5c; color: #eee; }
+.btn-reset:hover { background: #4d4d6c; }
+.btn-add { background: #4ecdc4; color: #1a1a2e; }
+.btn-add:hover { background: #3dbdb4; }
+.btn-save { background: #4ecdc4; color: #1a1a2e; width: 100%; margin-top: 10px; }
+.btn-save:hover { background: #3dbdb4; }
+
+.session-info {
+    text-align: center;
+    font-size: 13px;
+    color: #aaa;
+}
+
+/* ── 标签页 ──────────────────────────────── */
+
+.tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #2d2d44;
+    color: #aaa;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.tab.active { background: #ff6b6b; color: #fff; }
+
+/* ── 任务面板 ────────────────────────────── */
+
+.task-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.task-input-row input {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2d2d44;
+    color: #eee;
+    font-size: 14px;
+    outline: none;
+}
+
+.task-input-row input:focus { box-shadow: 0 0 0 2px #ff6b6b; }
+
+.task-current {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.task-current span { color: #4ecdc4; }
+
+.task-list { list-style: none; }
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #2d2d44;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    transition: background 0.2s;
+}
+
+.task-item:hover { background: #35355a; }
+.task-item.completed { opacity: 0.5; }
+
+.task-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #4ecdc4;
+    cursor: pointer;
+}
+
+.task-item .task-title {
+    flex: 1;
+    font-size: 14px;
+}
+
+.task-item.completed .task-title { text-decoration: line-through; }
+
+.task-item .task-select {
+    color: #4ecdc4;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: transparent;
+    border: 1px solid #4ecdc4;
+}
+
+.task-item .task-select.active {
+    background: #4ecdc4;
+    color: #1a1a2e;
+}
+
+.task-item .task-delete {
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 16px;
+    background: none;
+    border: none;
+}
+
+/* ── 统计面板 ────────────────────────────── */
+
+.stat-cards {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    flex: 1;
+    background: #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ff6b6b;
+}
+
+.stat-label { font-size: 13px; color: #aaa; margin-top: 4px; }
+
+.chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 120px;
+    padding: 10px 0;
+}
+
+.chart-bar {
+    flex: 1;
+    background: #4ecdc4;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    position: relative;
+}
+
+.chart-bar-label {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #aaa;
+}
+
+/* ── 设置面板 ────────────────────────────── */
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.setting-row label { font-size: 14px; }
+
+.setting-row input[type="number"] {
+    width: 70px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    background: #2d2d44;
+    color: #eee;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+}
+
+.setting-row input[type="number"]:focus { box-shadow: 0 0 0 2px #ff6b6b; }
+
+.setting-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #ff6b6b;
+}

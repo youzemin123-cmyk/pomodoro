@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄钟</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 计时器区域 -->
+        <section class="timer-section">
+            <h1 class="app-title">🍅 番茄钟</h1>
+            <div class="timer-ring-container">
+                <svg class="timer-ring" viewBox="0 0 200 200">
+                    <circle class="ring-bg" cx="100" cy="100" r="90"/>
+                    <circle class="ring-progress" cx="100" cy="100" r="90" id="progress-ring"/>
+                </svg>
+                <div class="timer-display">
+                    <span class="timer-time" id="timer-time">25:00</span>
+                    <span class="timer-label" id="timer-label">准备工作</span>
+                </div>
+            </div>
+            <div class="timer-controls">
+                <button class="btn btn-start" id="btn-start" onclick="startTimer()">开始</button>
+                <button class="btn btn-pause" id="btn-pause" onclick="pauseTimer()" disabled>暂停</button>
+                <button class="btn btn-reset" id="btn-reset" onclick="resetTimer()">重置</button>
+            </div>
+            <div class="session-info">
+                <span id="session-type">工作中</span> ·
+                第 <span id="session-count">1</span> 个番茄
+            </div>
+        </section>
+
+        <!-- 功能面板 -->
+        <section class="panel-section">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('tasks')">📋 任务</button>
+                <button class="tab" onclick="switchTab('stats')">📊 统计</button>
+                <button class="tab" onclick="switchTab('settings')">⚙️ 设置</button>
+            </div>
+
+            <!-- 任务面板 -->
+            <div class="panel" id="panel-tasks">
+                <div class="task-input-row">
+                    <input type="text" id="task-input" placeholder="添加新任务..." onkeydown="if(event.key==='Enter') addTask()">
+                    <button class="btn btn-add" onclick="addTask()">添加</button>
+                </div>
+                <div class="task-current" id="task-current">
+                    当前任务：<span id="current-task-name">无</span>
+                </div>
+                <ul class="task-list" id="task-list"></ul>
+            </div>
+
+            <!-- 统计面板 -->
+            <div class="panel" id="panel-stats" style="display:none">
+                <div class="stat-cards">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-today">0</div>
+                        <div class="stat-label">今日番茄</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total-min">0</div>
+                        <div class="stat-label">总专注分钟</div>
+                    </div>
+                </div>
+                <h3>本周趋势</h3>
+                <div class="chart" id="week-chart"></div>
+            </div>
+
+            <!-- 设置面板 -->
+            <div class="panel" id="panel-settings" style="display:none">
+                <div class="setting-row">
+                    <label>工作时长（分钟）</label>
+                    <input type="number" id="set-work" min="1" max="120" value="25">
+                </div>
+                <div class="setting-row">
+                    <label>短休息时长（分钟）</label>
+                    <input type="number" id="set-break" min="1" max="60" value="5">
+                </div>
+                <div class="setting-row">
+                    <label>长休息时长（分钟）</label>
+                    <input type="number" id="set-long-break" min="1" max="120" value="15">
+                </div>
+                <div class="setting-row">
+                    <label>长休息间隔（番茄数）</label>
+                    <input type="number" id="set-interval" min="1" max="10" value="4">
+                </div>
+                <div class="setting-row">
+                    <label>声音提示</label>
+                    <input type="checkbox" id="set-sound" checked>
+                </div>
+                <button class="btn btn-save" onclick="saveSettings()">保存设置</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
