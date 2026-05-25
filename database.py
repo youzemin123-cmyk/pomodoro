@@ -1,8 +1,16 @@
 import sqlite3
 import os
+import json
 
-DB_DIR = os.path.join(os.path.dirname(__file__), 'data')
+BASE_DIR = os.path.dirname(__file__)
+DB_DIR = os.path.join(BASE_DIR, 'data')
 DB_PATH = os.path.join(DB_DIR, 'pomodoro.db')
+CONFIG_PATH = os.path.join(BASE_DIR, 'config.json')
+
+
+def load_config():
+    with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
 
 def get_db():
@@ -36,12 +44,18 @@ def init_db():
             session_type TEXT DEFAULT 'work',
             FOREIGN KEY (task_id) REFERENCES tasks(id)
         );
-
-        INSERT OR IGNORE INTO settings (key, value) VALUES ('work_duration', '25');
-        INSERT OR IGNORE INTO settings (key, value) VALUES ('break_duration', '5');
-        INSERT OR IGNORE INTO settings (key, value) VALUES ('long_break_duration', '15');
-        INSERT OR IGNORE INTO settings (key, value) VALUES ('long_break_interval', '4');
-        INSERT OR IGNORE INTO settings (key, value) VALUES ('sound_enabled', '1');
     """)
+
+    config = load_config()
+    defaults = {
+        'work_duration': str(config.get('work_duration', 25)),
+        'break_duration': str(config.get('break_duration', 5)),
+        'long_break_duration': str(config.get('long_break_duration', 15)),
+        'long_break_interval': str(config.get('long_break_interval', 4)),
+        'sound_enabled': '1' if config.get('sound_enabled', True) else '0',
+    }
+    for key, value in defaults.items():
+        conn.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (key, value))
+
     conn.commit()
     conn.close()
